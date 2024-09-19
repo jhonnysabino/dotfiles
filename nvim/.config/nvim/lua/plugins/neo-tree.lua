@@ -8,10 +8,27 @@ return {
 		"3rd/image.nvim",
 	},
 
-  config = function()
-        require("neo-tree").setup({
-            close_if_last_window = true,
-            vim.keymap.set("n", "<C-n>", ":Neotree filesystem toggle reveal left<CR>")
-        })
-    end,
+	config = function()
+        vim.keymap.set("n", "<C-n>", ":Neotree filesystem toggle reveal left<CR>")
+		require("neo-tree").setup({
+			close_if_last_window = true,
+			default_component_configs = {
+				git_status = {
+					symbols = {
+						-- Change type
+						added = "✚",
+						deleted = "✖",
+						modified = "",
+						renamed = "󰁕",
+						-- Status type
+						untracked = "",
+						ignored = "",
+						unstaged = "󰄱",
+						staged = "",
+						conflict = "",
+					},
+				},
+			},
+		})
+	end,
 }
