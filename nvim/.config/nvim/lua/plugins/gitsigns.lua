@@ -13,7 +13,7 @@ return {
 					use_focus = true,
 				},
 			})
-			vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", {})
+			vim.keymap.set("n", "<leader>gp", ":Gitsigns preview_hunk<CR>", { desc = "Gitsigns: Preview hunk" })
 		end,
 	},
 }

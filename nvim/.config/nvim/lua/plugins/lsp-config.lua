@@ -22,7 +22,17 @@ return {
 				formatters_by_ft = {
 					lua = { "stylua" },
 					go = { "goimports", "gofmt" },
+					javascriptreact = { "prettier" },
+					typescriptreact = { "prettier" },
+					json = { "jq" },
 					javascript = function()
+						if util.root_pattern(".prettierrc")(vim.fn.getcwd()) then
+							return { "prettier" }
+						else
+							return { "biome" }
+						end
+					end,
+					typescript = function()
 						if util.root_pattern(".prettierrc")(vim.fn.getcwd()) then
 							return { "prettier" }
 						else
@@ -32,11 +42,16 @@ return {
 					kotlin = { "ktlint" },
 					terraform = { "terraform_fmt" },
 				},
+				notify_no_formatters = true,
+				notify_on_error = true,
 				format_on_save = {
 					timeout_ms = 500,
 					lsp_format = "fallback",
 				},
 			})
+			vim.keymap.set("n", "<leader>cf", function()
+				require("conform").format()
+			end, { desc = "Code Format" })
 			vim.api.nvim_create_autocmd("BufWritePre", {
 				pattern = "*",
 				callback = function(args)
@@ -56,15 +71,29 @@ return {
 				local opts = { noremap = true, silent = true, buffer = bufnr }
 
 				vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-				vim.keymap.set("n", "<leader>gd", "<cmd>Telescope lsp_definitions<CR>", opts)
-				vim.keymap.set("n", "<leader>gr", "<cmd>Telescope lsp_references<CR>", opts)
-				vim.keymap.set("n", "<leader>gi", "<cmd>Telescope lsp_implementations<CR>", opts)
-				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-				vim.keymap.set("n", "<space>rn", vim.lsp.buf.rename, opts)
-
-				vim.keymap.set("n", "<leader>gf", function()
-					require("conform").format()
-				end, opts)
+				vim.keymap.set(
+					"n",
+					"<leader>fd",
+					"<cmd>Telescope lsp_definitions<CR>",
+					{ desc = "LSP: Goto Definition" },
+					opts
+				)
+				vim.keymap.set(
+					"n",
+					"<leader>fr",
+					"<cmd>Telescope lsp_references<CR>",
+					{ desc = "LSP: Goto References" },
+					opts
+				)
+				vim.keymap.set(
+					"n",
+					"<leader>fi",
+					"<cmd>Telescope lsp_implementations<CR>",
+					{ desc = "LSP: Goto Implementation" },
+					opts
+				)
+				vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: Code Action" }, opts)
+				vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "LSP: Rename" }, opts)
 			end
 
 			lspconfig.lua_ls.setup({

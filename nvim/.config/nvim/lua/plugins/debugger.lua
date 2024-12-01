@@ -1,7 +1,4 @@
--- lua/plugins/debug.lua
-
 return {
-	-- Plugin principal de debugging
 	{
 		"mfussenegger/nvim-dap",
 		event = "VeryLazy",
@@ -9,14 +6,15 @@ return {
 			local dap = require("dap")
 
 			-- Configurando atalhos
-			vim.keymap.set("n", "<F5>", dap.continue, { desc = "Iniciar/Continuar debugging" })
-			vim.keymap.set("n", "<F10>", dap.step_over, { desc = "Pular linha" })
-			vim.keymap.set("n", "<F11>", dap.step_into, { desc = "Entrar na função" })
-			vim.keymap.set("n", "<F12>", dap.step_out, { desc = "Sair da função" })
-			vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Alternar breakpoint" })
-			vim.keymap.set("n", "<leader>B", function()
+			vim.keymap.set("n", "<leader>d", dap.continue, { desc = "Debugging" })
+			vim.keymap.set("n", "<leader>D", dap.disconnect, { desc = "Debugging Disconnect" })
+			vim.keymap.set("n", "<leader>do", dap.step_over, { desc = "Debugging Step Over" })
+			vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Debugging Step Into" })
+			vim.keymap.set("n", "<leader>dO", dap.step_out, { desc = "Debugging Step Out" })
+			vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Debugging Toggle Breakpoint" })
+			vim.keymap.set("n", "<leader>dB", function()
 				dap.set_breakpoint(vim.fn.input("Condição do breakpoint: "))
-			end, { desc = "Adicionar breakpoint condicional" })
+			end, { desc = "Debugging add conditional breakpoint" })
 
 			-- Ícones para breakpoints
 			vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "", linehl = "", numhl = "" })

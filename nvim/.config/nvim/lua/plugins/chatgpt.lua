@@ -9,6 +9,6 @@ return {
 	},
 	config = function()
 		require("chatgpt").setup()
-		vim.keymap.set("n", "<leader>c", ":ChatGPT<CR>", {})
+		vim.keymap.set("n", "<leader>ia", ":ChatGPT<CR>", { desc = "ChatGPT: Open" })
 	end,
 }
