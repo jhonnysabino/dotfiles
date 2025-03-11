@@ -5,10 +5,9 @@ return {
 		config = function()
 			local dap = require("dap")
 
-			-- Configurando atalhos
-			vim.keymap.set("n", "<leader>d", dap.continue, { desc = "Debugging" })
-			vim.keymap.set("n", "<leader>D", dap.disconnect, { desc = "Debugging Disconnect" })
-			vim.keymap.set("n", "<leader>do", dap.step_over, { desc = "Debugging Step Over" })
+			vim.keymap.set("n", "<leader>dc", dap.continue, { desc = "Debugging Connect" })
+			vim.keymap.set("n", "<leader>dd", dap.disconnect, { desc = "Debugging Disconnect" })
+			vim.keymap.set("n", "<leader>dn", dap.step_over, { desc = "Debugging Next Step" })
 			vim.keymap.set("n", "<leader>di", dap.step_into, { desc = "Debugging Step Into" })
 			vim.keymap.set("n", "<leader>dO", dap.step_out, { desc = "Debugging Step Out" })
 			vim.keymap.set("n", "<leader>db", dap.toggle_breakpoint, { desc = "Debugging Toggle Breakpoint" })
@@ -144,9 +143,11 @@ return {
 		},
 		event = "VeryLazy",
 		config = function()
-			local dap, dapui = require("dap"), require("dapui")
+			local dap = require("dap")
+			local dapui = require("dapui")
 
 			dapui.setup({
+				reset = true,
 				icons = { expanded = "▾", collapsed = "▸" },
 				mappings = {
 					expand = { "<CR>", "<2-LeftMouse>" },
@@ -198,7 +199,7 @@ return {
 			end
 
 			-- Atalho para toggle da UI
-			vim.keymap.set("n", "<leader>ui", dapui.toggle, { desc = "Toggle Debug UI" })
+			vim.keymap.set("n", "<leader>dt", dapui.toggle, { desc = "Toggle Debug UI" })
 		end,
 	},
 

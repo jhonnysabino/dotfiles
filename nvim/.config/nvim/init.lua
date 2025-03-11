@@ -31,4 +31,3 @@ require("lazy").setup("plugins", {
 	},
 })
 require("vim-colorscheme")
-require("oil").setup()

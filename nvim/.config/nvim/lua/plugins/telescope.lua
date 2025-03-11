@@ -10,6 +10,8 @@ return {
 				defaults = {
 					file_ignore_patterns = {
 						"node_modules",
+						".git",
+						"vendor",
 					},
 					theme = "center",
 					sorting_strategy = "ascending",

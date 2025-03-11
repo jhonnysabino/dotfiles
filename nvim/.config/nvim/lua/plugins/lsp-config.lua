@@ -26,17 +26,17 @@ return {
 					typescriptreact = { "prettier" },
 					json = { "jq" },
 					javascript = function()
-						if util.root_pattern(".prettierrc")(vim.fn.getcwd()) then
+						if util.root_pattern("prettier.config.js", ".prettierrc")(vim.fn.getcwd()) then
 							return { "prettier" }
 						else
-							return { "biome" }
+							return { "biome-check" }
 						end
 					end,
 					typescript = function()
-						if util.root_pattern(".prettierrc")(vim.fn.getcwd()) then
+						if util.root_pattern("prettier.config.js", ".prettierrc")(vim.fn.getcwd()) then
 							return { "prettier" }
 						else
-							return { "biome" }
+							return { "biome-check" }
 						end
 					end,
 					kotlin = { "ktlint" },
@@ -96,6 +96,11 @@ return {
 				vim.keymap.set("n", "<leader>cr", vim.lsp.buf.rename, { desc = "LSP: Rename" }, opts)
 			end
 
+			lspconfig.gopls.setup({
+				capabilities = capabilities,
+				on_attach = on_attach,
+			})
+
 			lspconfig.lua_ls.setup({
 				capabilities = capabilities,
 				on_attach = on_attach,
@@ -108,7 +113,7 @@ return {
 				capabilities = capabilities,
 				on_attach = on_attach,
 				cmd_env = {
-					JAVA_HOME = "/home/jhonny/.sdkman/candidates/java/17.0.0-tem",
+					JAVA_HOME = "/home/jhonnysabino/.sdkman/candidates/java/17.0.0-tem",
 				},
 			})
 			lspconfig.terraformls.setup({
@@ -120,10 +125,10 @@ return {
 				on_attach = on_attach,
 				cmd = { vim.fn.stdpath("data") .. "/mason/bin/kotlin-language-server" },
 				cmd_env = {
-					JAVA_HOME = "/home/jhonny/.sdkman/candidates/java/11.0.11-open",
+					JAVA_HOME = "/home/jhonnysabino/.sdkman/candidates/java/11.0.11-open",
 					PATH = vim.fn.stdpath("data")
 						.. "/mason/bin:"
-						.. "/home/jhonny/.sdkman/candidates/java/11.0.11-open/bin:"
+						.. "/home/jhonnysabino/.sdkman/candidates/java/11.0.11-open/bin:"
 						.. vim.env.PATH,
 				},
 				root_dir = util.root_pattern("settings.gradle", "build.gradle", ".git"),
