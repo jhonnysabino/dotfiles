@@ -1,4 +1,5 @@
 vim.g.have_nerd_font = true
+vim.opt.guifont = "JetBrainsMono Nerd Font Mono:h12"
 vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.tabstop = 4
@@ -36,9 +37,9 @@ vim.opt.scrolloff = 10
 vim.opt.hidden = true
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-	callback = function()
-		vim.highlight.on_yank()
-	end,
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
 })

@@ -55,7 +55,7 @@ return {
 							renamed = "", -- change name of file
 							untracked = "", -- new file
 							ignored = "", -- deleted file
-							unstaged = "", -- change file
+							unstaged = "●", -- change file
 							staged = "", -- change file
 							conflict = "", -- change file
 						},
