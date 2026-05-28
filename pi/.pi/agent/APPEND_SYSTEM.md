@@ -1,0 +1,2 @@
+Always talk to the user in Brazilian Portuguese, except when the request says to write in English.
+Always when writing a commit, write in English and follow conventional commit format: type(scope): message.

@@ -1,0 +1,23 @@
+customCommands:
+  - key: "C"
+    context: "files"
+    loadingText: "Generating commit message..."
+    description: "Generate commit message with pi"
+    outputTitle: "Commit Message (Copied)"
+    command: |
+      msg=$(git diff --staged | $(which pi) --model deepseek/deepseek-v4-flash:xhigh -p \
+        'Generate a concise git commit message for these staged changes. Output ONLY the raw commit message with no markdown, no code blocks, no backticks, no explanations. Use conventional commit format strictly as type(scope): message.' \
+        2>/dev/null \
+        | tr -d '\n' \
+        | sed 's/```//g' \
+        | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' \
+        | sed -E 's/^[a-z]+: +//'); \
+      if printf "%s" "$msg" | grep -Eq '^[a-z]+\([a-z0-9._/-]+\): .+'; then \
+        : \
+      else \
+        msg="chore(repo): $msg"; \
+      fi; \
+      printf "%s" "$msg" > /tmp/commit_msg; \
+      printf "%s" "$msg" | xclip -selection clipboard >/dev/null 2>&1 & \
+      echo "$msg"
+    output: "popup"

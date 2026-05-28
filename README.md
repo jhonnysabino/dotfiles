@@ -6,6 +6,7 @@ Minhas configurações pessoais para Desenvolvimento.
 
 - `nvim/` — Configuração do Neovim
 - `wezterm/` — Configuração do WezTerm
+- `pi/` — Configuração do PI (coding agent)
 
 ## Instalação
 
@@ -17,13 +18,32 @@ cd ~/dotfiles
 # Ativar configurações com stow
 stow nvim
 stow wezterm
+stow --no-folding pi
 
 # Desativar configurações
 stow -D nvim
 stow -D wezterm
+stow -D pi
 ```
 
 > **Importante**: Após alterar qualquer arquivo, rode `stow -v -t ~ <pacote>` para atualizar os symlinks.
+> O `pi` usa `--no-folding` porque divide `~/.pi/agent/` com arquivos locais como `auth.json` e `sessions/`.
+
+### Setup PI em máquina nova
+
+```bash
+cd ~/dotfiles && ./pi/setup.sh
+```
+
+Ou manualmente:
+
+```bash
+cd ~/dotfiles && stow --no-folding pi
+npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+pi install npm:@codexstar/pi-listen
+pi install npm:@aliou/pi-processes
+pi  # faça /login para autenticar
+```
 
 ## Dependências
 

@@ -1,1 +1,12 @@
 undodir
+
+# pi - machine-specific
+pi/.pi/agent/auth.json
+pi/.pi/agent/sessions/
+pi/.pi/agent/npm/node_modules/
+pi/.pi/agent/gstack-pi/
+pi/.pi/agent/skills/gstack-browse/
+pi/.pi/agent/skills/browser-harness/
+pi/.pi/agent/skills/playwright-skill/
+pi/.pi/agent/cronjobs/
+pi/.pi/agent/bin/

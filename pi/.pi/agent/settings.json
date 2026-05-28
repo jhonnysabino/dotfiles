@@ -1,0 +1,45 @@
+{
+  "lastChangelogVersion": "0.76.0",
+  "defaultThinkingLevel": "xhigh",
+  "hideThinkingBlock": true,
+  "defaultProvider": "deepseek",
+  "defaultModel": "deepseek-v4-flash",
+  "quietStartup": true,
+  "enableInstallTelemetry": false,
+  "treeFilterMode": "default",
+  "packages": [
+    "npm:@codexstar/pi-listen",
+    "npm:@aliou/pi-processes"
+  ],
+  "delegate": {
+    "model": "deepseek/deepseek-v4-flash",
+    "thinkingLevel": "xhigh"
+  },
+  "voice": {
+    "version": 2,
+    "enabled": true,
+    "language": "pt-BR",
+    "scope": "global",
+    "backend": "local",
+    "localModel": "parakeet-v3",
+    "toggleShortcut": "ctrl+shift+v",
+    "ttsEnabled": false,
+    "ttsBackend": "local",
+    "ttsLocalModel": "kitten-nano-en-v0_2",
+    "ttsLocalVoiceId": 0,
+    "ttsDeepgramVoiceId": "aura-asteria-en",
+    "ttsSpeed": 1,
+    "ttsAutoSpeak": false,
+    "ttsDeepgramStreaming": false,
+    "ttsOnboardingShown": false,
+    "onboarding": {
+      "completed": true,
+      "schemaVersion": 2,
+      "completedAt": "2026-04-30T03:52:49.129Z",
+      "source": "migration"
+    }
+  },
+  "compaction": {
+    "enabled": false
+  }
+}
