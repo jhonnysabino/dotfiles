@@ -1,7 +1,7 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { readFileSync } from "node:fs";
 
-const CAVEMAN_SKILL_PATH = "/home/jhonny/.pi/agent/skills/caveman/SKILL.md";
+const CAVEMAN_SKILL_PATH = "/home/jhonny-sabino/.pi/agent/skills/caveman/SKILL.md";
 const CAVEMAN_MARKER = "## CAVEMAN MODE ACTIVE";
 
 export default function (pi: ExtensionAPI) {

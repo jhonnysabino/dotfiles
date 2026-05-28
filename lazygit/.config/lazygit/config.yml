@@ -1,3 +1,9 @@
+os:
+  editInTerminal: false
+  edit: '[ -z "$NVIM" ] && nvim -- {{filename}} || (nvim --server "$NVIM" --remote-tab {{filename}} && nvim --server "$NVIM" --remote-send ":LazygitClose<CR>")'
+  editAtLine: '[ -z "$NVIM" ] && nvim +{{line}} -- {{filename}} || (nvim --server "$NVIM" --remote-tab {{filename}} && nvim --server "$NVIM" --remote-send "{{line}}G:LazygitClose<CR>")'
+  open: '[ -z "$NVIM" ] && nvim -- {{filename}} || (nvim --server "$NVIM" --remote-tab {{filename}} && nvim --server "$NVIM" --remote-send ":LazygitClose<CR>")'
+
 customCommands:
   - key: "C"
     context: "files"

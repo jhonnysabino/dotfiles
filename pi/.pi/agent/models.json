@@ -12,26 +12,6 @@
         }
       ]
     },
-    "lm-studio": {
-      "baseUrl": "http://localhost:1234/v1",
-      "api": "openai-completions",
-      "apiKey": "lm-studio",
-      "models": [
-        {
-          "id": "qwen3.6-27b"
-        }
-      ]
-    },
-    "llama.cpp": {
-      "baseUrl": "http://localhost:8080/v1",
-      "api": "openai-completions",
-      "apiKey": "llama",
-      "models": [
-        {
-          "id": "Qwen3.6-27B-Q4_0"
-        }
-      ]
-    }
   }
 }
 
