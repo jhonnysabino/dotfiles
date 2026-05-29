@@ -36,15 +36,11 @@ run_with_retry() {
     fi
 
     if [ "$attempt" -ge "$MAX_RETRIES" ]; then
-      echo
-      echo "$command_name failed after $attempt attempt(s)."
+      echo "[RALPH-LOOP] ${command_name} failed after ${attempt} attempt(s)."
       return "$status"
     fi
 
-    echo
-    echo "$command_name failed with status $status."
-    echo "Retrying $command_name in ${RETRY_SLEEP_SECONDS}s... attempt $((attempt + 1))/$MAX_RETRIES"
-    echo
+    echo "[RALPH-LOOP] ${command_name} failed (status ${status}) — retrying in ${RETRY_SLEEP_SECONDS}s [attempt $((attempt + 1))/${MAX_RETRIES}]"
 
     sleep "$RETRY_SLEEP_SECONDS"
     attempt=$((attempt + 1))
@@ -53,59 +49,41 @@ run_with_retry() {
 
 for ((i=1; i<=$1; i++)); do
   echo
-  echo "========================================"
-  echo "Ralph loop $i/$1"
-  echo "Started at: $(date '+%Y-%m-%d %H:%M:%S')"
-  echo "========================================"
-  echo
+  echo "[RALPH-LOOP] ── [${i}/${1}] $(date '+%H:%M:%S') ──────────────────────────────────────"
 
   before_commit=$(git rev-parse HEAD 2>/dev/null || echo "")
 
   set +e
-  run_with_retry "Ralph" "$AFK_SCRIPT" 1
+  run_with_retry "afk" "$AFK_SCRIPT" 1
   ralph_status=$?
   set -e
 
   if [ "$ralph_status" -eq 10 ]; then
-    echo
-    echo "No more AFK tasks. Stopping Ralph loop."
-    echo
+    echo "[RALPH-LOOP] No more tasks."
     exit 0
   fi
 
   if [ "$ralph_status" -ne 0 ]; then
-    echo
-    echo "Ralph failed with status $ralph_status."
-    echo
+    echo "[RALPH-LOOP] ERROR: Afk failed (status ${ralph_status})."
     exit "$ralph_status"
   fi
 
   after_commit=$(git rev-parse HEAD 2>/dev/null || echo "")
 
   if [[ "$before_commit" == "$after_commit" ]]; then
-    echo
-    echo "No new commit created. Skipping review."
-    echo
+    echo "[RALPH-LOOP] No commit — skipping review."
     continue
   fi
 
-  echo
-  echo "Reviewing commit: $after_commit"
-  echo
+  after_subject=$(git log -1 --format="%s" "$after_commit" 2>/dev/null || echo "(unknown)")
+  echo "[RALPH-LOOP] Commit ${after_commit:0:9}  ${after_subject}"
 
   set +e
-  run_with_retry "Ralph review" "$REVIEW_SCRIPT" "$after_commit"
+  run_with_retry "review" "$REVIEW_SCRIPT" "$after_commit"
   review_status=$?
   set -e
 
   if [ "$review_status" -ne 0 ]; then
-    echo
-    echo "Review finished with status $review_status."
-    echo "Continuing loop because review failures may reopen the issue for the next iteration."
-    echo
+    echo "[RALPH-LOOP] Review failed (status ${review_status}) — continuing."
   fi
-
-  echo
-  echo "Ralph loop $i/$1 - Finished at: $(date '+%Y-%m-%d %H:%M:%S')"
-  echo
 done

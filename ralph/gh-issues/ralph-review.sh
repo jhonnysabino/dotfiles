@@ -7,14 +7,11 @@ PROMPT_FILE="${PROMPT_FILE:-ralph/ralph-review-prompt.md}"
 MODEL="${MODEL:-zai/glm-5.1:high}"
 
 if [ ! -f "$PROMPT_FILE" ]; then
-  echo "Review prompt not found: $PROMPT_FILE"
+  echo "[RALPH-REVIEW] ERROR: Review prompt not found: $PROMPT_FILE"
   exit 1
 fi
 
-echo
-echo "Ralph review - Started at: $(date '+%Y-%m-%d %H:%M:%S')"
-echo "Reviewing commit: $COMMIT"
-echo
+echo "[RALPH-REVIEW] Started at $(date '+%H:%M:%S') — commit ${COMMIT:0:9}"
 
 commit_hash=$(git rev-parse "$COMMIT")
 commit_subject=$(git log -1 --format="%s" "$COMMIT")
@@ -31,13 +28,14 @@ issue_number=$(
 )
 
 if [ -z "$issue_number" ]; then
-  echo "Could not find issue number in commit message."
-  echo "Expected commit body line like: Issue: #123"
+  echo "[RALPH-REVIEW] ERROR: Issue number not found in commit message."
+  echo "[RALPH-REVIEW] Expected a line like: Issue: #123"
+  echo "[RALPH-REVIEW] Commit message was:"
+  echo "$commit_message"
   exit 1
 fi
 
-echo "Original issue: #$issue_number"
-echo
+echo "[RALPH-REVIEW] Issue: #${issue_number}"
 
 issue_json=$(
   gh issue view "$issue_number" \
@@ -45,7 +43,7 @@ issue_json=$(
     2>/dev/null || echo "{}"
 )
 
-pi --model "$MODEL" -p <<__PI_RALPH_REVIEW_PROMPT__
+pi --model "$MODEL" -p <<__PI_RALPH_REVIEW_PROMPT__ 2>&1 | sed $'s/\r//g; s/\x1b\\[[0-9;]*[A-Za-z]//g'
 <review_target>
 $commit_hash
 </review_target>
@@ -79,6 +77,4 @@ $review_prompt
 </instructions>
 __PI_RALPH_REVIEW_PROMPT__
 
-echo
-echo "Ralph review - Finished at: $(date '+%Y-%m-%d %H:%M:%S')"
-echo
+echo "[RALPH-REVIEW] Finished at $(date '+%H:%M:%S')"

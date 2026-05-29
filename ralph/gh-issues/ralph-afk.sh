@@ -113,9 +113,7 @@ PY
 }
 
 for ((i=1; i<=$1; i++)); do
-  echo
-  echo "Ralph iteration $i/$1 - Started at: $(date '+%Y-%m-%d %H:%M:%S')"
-  echo
+  echo "[RALPH-AFK] Started at $(date '+%H:%M:%S')"
 
   tmpfile=$(mktemp)
   issues_file=$(mktemp)
@@ -126,7 +124,7 @@ for ((i=1; i<=$1; i++)); do
   classified_issues=$(classify_open_issues "$issues_file")
   prompt=$(cat ralph/ralph-afk-prompt.md)
 
-  pi --model deepseek/deepseek-v4-flash:xhigh -p <<__PI_RALPH_PROMPT__ 2>&1 | tee "$tmpfile"
+  pi --model deepseek/deepseek-v4-flash:xhigh -p <<__PI_RALPH_PROMPT__ 2>&1 | sed $'s/\r//g; s/\x1b\\[[0-9;]*[A-Za-z]//g' | tee "$tmpfile"
 <recent_commits>
 $commits
 </recent_commits>
@@ -147,9 +145,7 @@ __PI_RALPH_PROMPT__
   result=$(cat "$tmpfile")
   rm -f "$tmpfile" "$issues_file"
 
-  echo
-  echo "Ralph iteration $i/$1 - Finished at: $(date '+%Y-%m-%d %H:%M:%S')"
-  echo
+  echo "[RALPH-AFK] Finished at $(date '+%H:%M:%S')"
 
   if [[ "$result" == *"<promise>NO MORE TASKS</promise>"* ]]; then
     remaining_issues_file=$(mktemp)
@@ -157,15 +153,14 @@ __PI_RALPH_PROMPT__
     remaining_executable_count=$(count_open_executable_issues "$remaining_issues_file")
 
     if [ "$remaining_executable_count" -gt 0 ]; then
-      echo "Ralph claimed <promise>NO MORE TASKS</promise>, but $remaining_executable_count open executable issue(s) remain."
-      echo "Remaining executable issues:"
+      echo "[RALPH-AFK] ERROR: Claimed no more tasks but ${remaining_executable_count} open executable issue(s) remain:"
       list_open_executable_issues "$remaining_issues_file"
       rm -f "$remaining_issues_file"
       exit 11
     fi
 
     rm -f "$remaining_issues_file"
-    echo "Ralph complete after $i iterations."
+    echo "[RALPH-AFK] Complete — no more tasks."
     exit 10
   fi
 done
