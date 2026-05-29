@@ -1,7 +1,9 @@
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { readFileSync } from "node:fs";
+import { homedir } from "node:os";
+import { join } from "node:path";
 
-const WIKI_SKILL_PATH = "/home/jhonny-sabino/.pi/agent/skills/llm-wiki/SKILL.md";
+const WIKI_SKILL_PATH = join(homedir(), ".pi", "agent", "skills", "llm-wiki", "SKILL.md");
 const WIKI_MARKER = "## LLM-WIKI INJECTED";
 
 export default function (pi: ExtensionAPI) {
