@@ -1,15 +1,18 @@
 {
-  "lastChangelogVersion": "0.76.0",
+  "lastChangelogVersion": "0.78.0",
   "defaultThinkingLevel": "xhigh",
   "hideThinkingBlock": true,
   "defaultProvider": "deepseek",
-  "defaultModel": "deepseek-v4-flash",
+  "defaultModel": "deepseek-v4-pro",
   "quietStartup": true,
   "enableInstallTelemetry": false,
   "treeFilterMode": "default",
   "packages": [
     "npm:@codexstar/pi-listen",
-    "npm:@aliou/pi-processes"
+    "npm:@aliou/pi-processes",
+    "npm:pi-token-speed",
+    "npm:@firstpick/pi-extension-brave-search",
+    "npm:pi-caveman"
   ],
   "delegate": {
     "model": "deepseek/deepseek-v4-flash",
@@ -41,5 +44,8 @@
   },
   "compaction": {
     "enabled": false
+  },
+  "tokenSpeed": {
+    "display": "tps"
   }
 }

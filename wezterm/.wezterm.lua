@@ -8,6 +8,19 @@ config.font = wezterm.font_with_fallback({
 })
 config.font_size = 10
 config.color_scheme = 'GruvboxDarkHard'
+
+-- Mouse: SHIFT bypassa mouse reporting (neovim/tmux)
+config.bypass_mouse_reporting_modifiers = 'SHIFT'
+
+-- Clipboard: WezTerm no Wayland inicializa o wl_data_device lazy.
+-- Isso às vezes faz clipboard entre janelas falhar até primeira
+-- operação. Uma operação dummy no startup resolve.
+wezterm.on('window-config-reloaded', function(window, pane)
+  window:perform_action(
+    wezterm.action.CopyTo 'ClipboardAndPrimarySelection',
+    pane
+  )
+end)
 config.scrollback_lines = 1000000
 
 local function is_nvim(pane)

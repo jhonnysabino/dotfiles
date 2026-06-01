@@ -12,7 +12,7 @@ customCommands:
     outputTitle: "Commit Message (Copied)"
     command: |
       msg=$(git diff --staged | $(which pi) --model deepseek/deepseek-v4-flash:xhigh -p \
-        'Generate a concise git commit message for these staged changes. Output ONLY the raw commit message with no markdown, no code blocks, no backticks, no explanations. Use conventional commit format strictly as type(scope): message.' \
+        'Generate a short and concise git commit message for these staged changes. Output ONLY the raw commit message with no markdown, no code blocks, no backticks, no explanations. Use conventional commit format strictly as type(scope): message.' \
         2>/dev/null \
         | tr -d '\n' \
         | sed 's/```//g' \

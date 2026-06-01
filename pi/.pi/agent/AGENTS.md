@@ -66,3 +66,41 @@ If you genuinely think a convention is harmful, surface it. Don't fork silently.
 "Completed" is wrong if anything was skipped silently.
 "Tests pass" is wrong if any were skipped.
 Default to surfacing uncertainty, not hiding it.
+
+## Gotchas to follow
+
+- Do not mix business logic with I/O.
+  Business rules belong in `calc_*`; I/O belongs in `action_*`.
+
+- Do not write “god functions” that fetch data, transform it, branch on business rules, mutate state, and persist results in the same function.
+
+- Do not hide dependencies in globals, env, singleton state, module state, or implicit context.
+  Pass dependencies explicitly.
+
+- Do not make calculations depend on time, randomness, timers, UUID generation, filesystem, network, DB, DOM, or logging.
+
+- Do not mutate shared state in-place.
+  Prefer copy-on-write and returning new values.
+
+- Do not couple business rules to storage or collection internals.
+  Business logic should not care about indexes, `.push`, `.splice`, SQL shape, or persistence details.
+
+- Do not attach behavior and hidden mutable state to data objects/classes unless truly necessary.
+  Prefer inert data + pure transformations.
+
+- Do not spread side effects throughout the codebase.
+  Keep effects near boundaries and orchestration layers.
+
+- Do not let orchestration become the place where all business logic lives.
+  Extract decisions into pure calculations.
+
+- Do not use async timing hacks (`setTimeout`, sleeps, retries) as correctness mechanisms.
+
+- Do not create calculations that require mocks or integration environments.
+  If a function needs mocks, it is probably an action.
+
+- Do not introduce hidden bidirectional coupling between calculations and actions.
+  Dependency direction should stay:
+  actions → calculations
+  never:
+  calculations → actions
